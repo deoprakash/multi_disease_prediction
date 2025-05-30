@@ -101,5 +101,6 @@ MIT License. Free to use and modify.
 
 ## ✨ Author
 
-**[Deo Prakash]([https://github.com/deoprakash](https://www.linkedin.com/in/deo-prakash-152265225/))**  | **[Arya Singh]([https://github.com/deoprakash](https://www.linkedin.com/in/arya-singh-3558a5256/))**  
+**[Deo Prakash](https://www.linkedin.com/in/deo-prakash-152265225/)**  |  **[Arya Singh](https://www.linkedin.com/in/arya-singh-3558a5256/)**
+
 Third-year B.Tech | AI/ML Engineer in progress 🚀
