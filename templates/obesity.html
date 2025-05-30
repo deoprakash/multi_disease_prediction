@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Obesity Risk Predictor</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style/chat.css') }}">
+  <style>
+  :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+  }
+
+  body {
+    background-color: #d5d9e9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .accent-circle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .accent-circle-1 {
+    width: 300px;
+    height: 300px;
+    background-color: rgba(67, 97, 238, 0.15);
+    top: -100px;
+    left: -100px;
+  }
+
+  .accent-circle-2 {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(67, 150, 238, 0.1);
+    bottom: -200px;
+    right: -200px;
+  }
+
+  .accent-circle-3 {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(63, 55, 201, 0.08);
+    top: 50%;
+    right: 10%;
+  }
+
+
+  .accent-circle {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* @keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+} */
+
+
+  .main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .header p {
+    color: #6c757d;
+  }
+
+  .form-container {
+    background-color: #ffffff;
+    margin: 30px auto;
+    max-width: 1200px;
+    font-weight:500;
+  }
+
+  .radio-option {
+    display: inline-block;
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #37474f;
+  }
+
+  .radio-option input {
+    margin-right: 5px;
+  }
+
+  .input-hint {
+    font-size: 0.85rem;
+    color: #78909c;
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+.card h3 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d3557;
+    margin-bottom: 15px;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h5 {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #457b9d;
+  }
+
+  .card p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .card ul {
+    padding-left: 20px;
+  }
+
+  .card li {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #444;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(67, 97, 238, 0.25);
+    transition: all 0.3s;
+    width: fit-content;
+    padding: 10px 20px;
+    margin: 20px auto;
+    display: block;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(67, 97, 238, 0.3);
+  }
+
+  .back-link {
+    display: inline-flex;
+    color: #1976d2;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: all 0.3s;
+    padding: 10px 18px;
+    margin-left: 30px;
+  }
+
+  .back-link:hover {
+    color: #f80303;
+    transform: translateX(-3px) scale(1.03);
+    text-decoration: underline;
+  }
+
+.result-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    
+    .result-header {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .prediction-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .result-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+  .consult-note {
+    font-size: 0.9rem;
+    color: #cc0000;
+    margin-top: 10px;
+  }
+
+  .badge-wrapper {
+    background-color: #e6fffa;
+    color: #0694a2;
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 24px;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+    .card h3 {
+      font-size: 22px;
+    }
+
+    .card h5 {
+      font-size: 18px;
+    }
+  }
+</style>
+
+</head>
+<body>
+  <a href="/" class="back-link">
+        <span style="margin-right: 5px;">←</span> Back
+    </a>
+           <!-- Accent design elements -->
+  <div class="accent-circle accent-circle-1"></div>
+  <div class="accent-circle accent-circle-2"></div>
+  <div class="accent-circle accent-circle-3"></div>
+
+  <!-- <div class="container py-5"> -->
+    <div class="main-container">
+        <div class="card mb-4">
+            <div class="header">
+            <h1>Obesity Risk predictor</h1>
+        </div>
+            <div class="card-body">
+                <p>
+                    <strong>Obesity</strong> is a complex medical condition characterized by excessive body fat accumulation that presents a risk to health. 
+                    It is one of the leading global health concerns and significantly increases the risk of developing serious conditions such as type 2 
+                    diabetes, cardiovascular disease, certain cancers, and musculoskeletal disorders. Obesity arises from an imbalance between calories 
+                    consumed and calories expended and is influenced by a combination of genetic, behavioral, metabolic, and environmental factors.
+                    Early identification and risk assessment of obesity are crucial in preventing long-term health complications. Lifestyle modifications, 
+                    including healthy eating, regular physical activity, behavioral therapy, and, in some cases, medical or surgical interventions, can help
+                     manage and reduce obesity.
+                </p>
+                    <h5>Key Risk Factors</h5>
+                <ul>
+                    <li><strong>Poor Diet:</strong> Consuming high-calorie, low-nutrient foods leads to weight gain.</li>
+                    <li><strong>Physical Inactivity:</strong> Sedentary lifestyle contributes to fat accumulation.</li>
+                    <li><strong>Genetic Factors:</strong> Family history and genetics influence fat storage and metabolism.</li>
+                    <li><strong>Psychological Factors:</strong> Stress, depression, or emotional eating habits can contribute to obesity.</li>
+                    <li><strong>Hormonal Imbalances:</strong> Conditions like hypothyroidism or polycystic ovary syndrome (PCOS) may increase obesity risk.</li>
+                </ul>
+            </div>
+        </div>
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="header">
+            <h2 style="color: #1976d2;">Obesity Risk Assessment</h2>
+        <p>Fill the required parameters to identify potential risk.</p>
+      </div>
+        <div class="form-container">
+        <form method="POST" action="/obesity">
+            <!-- Gender -->
+            <div class="form-group">
+                <label>Gender:</label>
+                <div style="display: flex; align-items: center;">
+                  <label class="radio-option"><input type="radio" name="gender" value="Female" required> Female</label>
+                  <label class="radio-option"><input type="radio" name="gender" value="Male" required> Male</label>
+                </div>
+            </div>
+              <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Age:</label>
+                        <input type="number" name="age" class="form-control" required>
+                        <div class="input-hint">Years</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Height:</label>
+                        <input type="number" step="any" name="height" class="form-control" required>
+                        <div class="input-hint">In Metres</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Weight:</label>
+                        <input type="number" step="any" name="weight" class="form-control" required>
+                        <div class="input-hint">In kilograms</div>
+                    </div>
+                </div>
+            </div>
+<br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Family History with Overweight:</label>
+                        <div style="display: flex; align-items: center;">
+                          <label class="radio-option"><input type="radio" name="family_history_with_overweight" value="no" required> No</label>
+                          <label class="radio-option"><input type="radio" name="family_history_with_overweight" value="yes" required> Yes</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>High Calorie Intake:</label>
+                        <div style="display: flex; align-items: center;">
+                          <label class="radio-option"><input type="radio" name="high-calorie_intake" value="no" required> No</label>
+                          <label class="radio-option"><input type="radio" name="high-calorie_intake" value="yes" required> Yes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Frequency of Vegetable Consumption:</label>
+                        <input type="number" name="freq_vegetable_consumption" class="form-control" required>
+                        <div class="input-hint">Times per Day</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Main Meals per Day:</label>
+                        <input type="number" name="main_meal_per_day" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+<br>
+            <div class="form-group">
+                <label>Food Intake Between Meals:</label>
+                <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                  <label class="radio-option"><input type="radio" name="food_between_meals" value="no" required> No</label>
+                  <label class="radio-option"><input type="radio" name="food_between_meals" value="Sometimes" required> Sometimes</label>
+                  <label class="radio-option"><input type="radio" name="food_between_meals" value="Frequently" required> Frequently</label>
+                  <label class="radio-option"><input type="radio" name="food_between_meals" value="Always" required> Always</label>
+                </div>
+            </div>
+<br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Smoking Status:</label>
+                        <div style="display: flex; align-items: center;">
+                          <label class="radio-option"><input type="radio" name="smoke" value="no" required> No</label>
+                          <label class="radio-option"><input type="radio" name="smoke" value="yes" required> Yes</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Daily Water Intake:</label>
+                        <input type="number" name="daily_water_intake" class="form-control" required>
+                        <div class="input-hint">In liters</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Calorie Monitoring:</label>
+                        <div style="display: flex; align-items: center;">
+                          <label class="radio-option"><input type="radio" name="calorie_intake" value="no" required> No</label>
+                          <label class="radio-option"><input type="radio" name="calorie_intake" value="yes" required> Yes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Physical Activity Frequency:</label>
+                        <input type="number" name="phy_activity_freq" class="form-control" required>
+                        <div class="input-hint">Times per week</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Screen Time:</label>
+                        <input type="number" name="time_using_tech" class="form-control" required>
+                        <div class="input-hint">Hours per day</div>
+                    </div>
+                </div>
+            </div>
+<br>
+            <div class="form-group">
+                <label>Alcohol Consumption:</label>
+                <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                  <label class="radio-option"><input type="radio" name="alcohol_consumption" value="no" required> No</label>
+                  <label class="radio-option"><input type="radio" name="alcohol_consumption" value="Sometimes" required> Sometimes</label>
+                  <label class="radio-option"><input type="radio" name="alcohol_consumption" value="Frequently" required> Frequently</label>
+                  <label class="radio-option"><input type="radio" name="alcohol_consumption" value="Always" required> Always</label>
+                </div>
+            </div>
+<br>
+            <div class="form-group">
+                <label>Primary Mode of Transportation:</label>
+                <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                  <label class="radio-option"><input type="radio" name="transport_use" value="Walking" required> Walking</label>
+                  <label class="radio-option"><input type="radio" name="transport_use" value="Public_Transportation" required> Public Transportation</label>
+                  <label class="radio-option"><input type="radio" name="transport_use" value="Motorbike" required> Motorbike</label>
+                  <label class="radio-option"><input type="radio" name="transport_use" value="Bike" required> Bike</label>
+                  <label class="radio-option"><input type="radio" name="transport_use" value="Automobile" required> Automobile</label>
+                </div>
+            </div>
+<br>
+            <button type="submit" class="btn btn-primary px-5 mt-3" style="position: relative; left: 1px; top: 40px; transition: none;">
+                <i class="fas fa-search-plus me-2"></i>Generate Assessment
+            </button>
+        </form>
+        </div>
+    </div>
+</div>
+      
+      {% if prediction %}
+      <div class="result-card">
+  <div class="result-header">
+    <div class="badge-wrapper">Analysis Complete</div>
+    <h4 class="mb-1">Result</h4>
+    <span class="prediction-label">{{ prediction }}</span>
+  </div>
+  <div class="result-body">
+    <p class="consult-note">Note: This result is generated by an AI model. Please consult a medical professional for an accurate diagnosis and advice.</p>
+  </div>
+</div>
+
+      {% endif %}
+      
+  <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+
+  <!-- Progress Bar -->
+<div class="progress mt-3" id="progress-bar" style="display:none;">
+  <div class="progress-bar" role="progressbar" id="progress" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='script/chat.js') }}"></script>
+</html>
+

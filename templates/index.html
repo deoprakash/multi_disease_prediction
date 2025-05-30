@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>A & D Health AI Solutions</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <link rel = 'stylesheet' href="{{ url_for('static', filename='style/index.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+</head>
+<body>
+  <!-- Accent design elements -->
+  <div class="accent-circle accent-circle-1"></div>
+  <div class="accent-circle accent-circle-2"></div>
+  <div class="accent-circle accent-circle-3"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='logo_circle.png') }}" alt="Health AI Logo">
+        <span>A&D Health AI</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/aboutUs">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact Us</a>
+          </li>
+    {% if username %}
+      <li class="nav-item">
+        <span > <a class="nav-link" href="/history">👋 Hello, {{ username }}</a></span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="/logout">Logout</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Register</a>
+      </li>
+    {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+       
+  <!-- Hero Section -->
+  <section class="hero-section fade-in-up" >
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-subtitle">AI-Powered Medical Diagnostics</div>
+        <h1 class="hero-title">Advanced Health Analysis at Your Fingertips</h1>
+        <p class="hero-description">Applying artificial intelligence to assist in generating medical predictions that can support healthcare professionals and patients in the diagnostic process. The project aims to explore how AI can be used as an additional tool to aid decision-making without replacing clinical expertise.</p>
+        
+        <!-- Model Selection Dropdown inside hero section -->
+        <div class="model-selector mt-4">
+          <div class="dropdown">
+            <button class="select-model-btn" type="button" id="modelDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Start Diagnosing <i class="fas fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="modelDropdown">
+              <li>
+                <a class="dropdown-item" href="/iron">
+                  <div class="dropdown-icon">
+                    <i class="fas fa-microscope"></i>
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Iron Deficiency Prediction</div>
+                    <div class="dropdown-item-description">Upload medical images for analysis of potential iron deficiency or anemia</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/cardio">
+                  <div class="dropdown-icon">
+                    <i class="fas fa-heartbeat"></i>
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Cardiovascular Analysis</div>
+                    <div class="dropdown-item-description">Analyze heart health and detect potential issues</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/cancer">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-notes-medical"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Cancer Analysis</div>
+                    <div class="dropdown-item-description">Detect uncontrolled cell growth and identify potential cancer risks</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/diabetes">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-syringe"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Diabetes Risk Prediction</div>
+                    <div class="dropdown-item-description">Evaluate blood sugar levels and assess the risk of diabetes</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/obesity">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-user"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Obesity Risk Prediction</div>
+                    <div class="dropdown-item-description">Evaluate body fat levels and assess the risk of obesity-related health issues</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/sicklecell">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-vials"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Sickle Cell Anemia</div>
+                    <div class="dropdown-item-description">Analyze red blood cell abnormalities and assess the risk of sickle cell anemia</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/brain_tumor">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-vials"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Brain Tumor Prediction</div>
+                    <div class="dropdown-item-description">Analyze brain MRI images to detect abnormalities and assess the risk of brain tumor.</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/ckd">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-vials"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Chronic Kidney Disease Risk Prediction</div>
+                    <div class="dropdown-item-description">Analyze clinical parameters to detect anomalies and assess the risk of chronic kidney disease.</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/common_disease">
+                  <div class="dropdown-icon">
+                      <i class="fas fa-vials"></i> 
+                  </div>
+                  <div class="dropdown-item-content">
+                    <div class="dropdown-item-title">Common Illness Risk Predictor</div>
+                    <div class="dropdown-item-description">Analyze clinical health parameters to detect anomalies and assess the risk of multiple common diseases.</div>
+                  </div>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Advanced AI Solutions</h2>
+        <p>Leveraging cutting-edge artificial intelligence to transform healthcare diagnostics and improve patient outcomes</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3 class="feature-title">AI-Powered Analysis</h3>
+            <p class="feature-description">Our advanced machine learning algorithms provide accurate and rapid analysis of medical data with high precision.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="feature-title">Secure & Private</h3>
+            <p class="feature-description">Your medical data is handled with the highest security standards, ensuring privacy and confidentiality at all times.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">Real-time Results</h3>
+            <p class="feature-description">Get immediate diagnostic predictions that can help healthcare professionals make informed decisions quickly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Health Quote Section -->
+  <section class="quote-section">
+    <div class="container">
+      <p class="quote-text">The greatest wealth is health. AI is not meant to replace healthcare professionals, but to augment their ability to provide better care for all.</p>
+      <p class="quote-author">- Health AI Philosophy</p>
+    </div>
+  </section>
+
+<!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-1">© 2025 A & D Health AI. All rights reserved.</p>
+      <p class="mb-0">Developed by Deo Prakash & Arya Singh</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+</body>
+<script src="{{ url_for('static', filename='script/script.js') }}"></script>
+</html>

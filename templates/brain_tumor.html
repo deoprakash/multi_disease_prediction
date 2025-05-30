@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Brain Tumor Prediction</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <link rel = 'stylesheet' href="{{ url_for('static', filename='style/chat.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+    
+    body {
+      background-color: #d5d9e9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    .accent-circle {
+      position: fixed;
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    
+    .accent-circle-1 {
+      width: 300px;
+      height: 300px;
+      background-color: rgba(67, 97, 238, 0.15);
+      top: -100px;
+      left: -100px;
+    }
+    
+    .accent-circle-2 {
+      width: 400px;
+      height: 400px;
+      background-color: rgba(67, 150, 238, 0.1);
+      bottom: -200px;
+      right: -200px;
+    }
+    
+    .accent-circle-3 {
+      width: 200px;
+      height: 200px;
+      background-color: rgba(63, 55, 201, 0.08);
+      top: 50%;
+      right: 10%;
+    }
+    
+    .main-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .header p {
+      color: #6c757d;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .upload-area {
+      border: 2px dashed #d1d5db;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .upload-area input[type="file"] {
+      display: none;
+    }
+    
+    .file-name {
+      margin-top: 1rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 30px;
+      font-weight: 500;
+      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.25);
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: var(--dark);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #d1d5db;
+    }
+    
+    .result-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    
+    .result-header {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .badge-wrapper {
+      background-color: #e6fffa;
+      color: #0694a2;
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    
+    .prediction-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .result-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .result-image {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    
+    /* Camera interface styles */
+    .camera-interface {
+      display: none;
+      position: relative;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .camera-interface video {
+      width: 100%;
+      border-radius: 8px;
+      max-height: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .camera-interface button {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 20px;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .camera-interface button:hover {
+      background-color: var(--secondary);
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.25);
+    }
+    
+    .camera-icon {
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--primary);
+      margin-right: 10px;
+    }
+
+    .back-link {
+            display: inline-flex;
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: all 0.3s;
+            padding: 10px 18px;
+            margin-left: 30px;
+            margin-right: auto; 
+        }
+        
+        .back-link:hover {
+            color: #f80303;
+            /* background-color: #c5d9f1; */
+            transform: translateX(-3px) scale(1.03);
+            /* box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3); */
+            text-decoration: underline;
+        }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .upload-area {
+        padding: 1.5rem;
+      }
+      
+      .upload-icon {
+        font-size: 2.5rem;
+      }
+      
+      .camera-interface video {
+        max-height: 300px;
+      }
+    }
+
+    .card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.card h3 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d3557;
+    margin-bottom: 15px;
+}
+
+.card h5 {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #457b9d;
+}
+
+.card p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.card ul {
+    padding-left: 20px;
+}
+
+.card li {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #444;
+}
+
+.medical-image-gallery {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;  /* Prevents wrapping */
+    gap: 16px;
+    overflow-x: auto;   /* Optional: enables horizontal scroll if screen is too small */
+    margin-top: 20px;
+}
+
+
+.medical-image-gallery img {
+    width: 220px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+}
+
+
+.image-item {
+    text-align: center;
+}
+
+.image-item p {
+    margin-top: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+  .consult-note {
+  font-size: 0.9rem;
+  color: #cc0000;
+  margin-top: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <a href="/" class="back-link">
+        <span style="margin-right: 5px;">←</span> Back
+    </a>
+           <!-- Accent design elements -->
+  <div class="accent-circle accent-circle-1"></div>
+  <div class="accent-circle accent-circle-2"></div>
+  <div class="accent-circle accent-circle-3"></div>
+
+  <div class="container py-5">
+    <div class="main-container">
+      <div class="header">
+        <h1>Brain Tumor Prediction</h1>
+        <!-- <p>Upload your medical image for professional analysis and prediction</p> -->
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="text-primary mb-3">About Brain Tumor</h3>
+          <p style="text-align: justify;">
+            <strong>Brain Tumor</strong> is a growth or mass of abnormal cells in the brain. Brain tumors can be either benign (non-cancerous) or malignant (cancerous). 
+            Early detection and accurate prediction of brain tumors help in better treatment outcomes and improved survival rates.
+            Brain tumors can arise from the brain tissue itself or spread from other parts of the body.
+            Symptoms may include headaches, seizures, vision problems, and changes in personality or behavior.
+            The exact cause of brain tumors is often unknown, but certain genetic factors and environmental exposures may increase the risk.
+          </p>
+        <h5 class="mt-4">Common Cancer Types</h5>
+          <ul>
+            <li><strong>Glioblastoma :</strong>A fast-growing, malignant tumor that occurs in the brain's supportive tissue.</li>
+            <li><strong>Meningioma:</strong> A benign tumor that forms in the meninges, the layers of tissue covering the brain and spinal cord.</li>
+            <li><strong>Medulloblastoma:</strong>  A cancerous tumor that usually starts in the cerebellum or brainstem and can spread to the spinal cord.</li>
+            <li><strong>Astrocytoma:</strong> A type of glioma that affects the star-shaped brain cells called astrocytes, which support nerve cells.</li>
+            <li><strong>Pituitary Tumor :</strong> A tumor that occurs in the pituitary gland, often affecting hormone levels and vision.</li>
+            <li><strong>Oligodendroglioma:</strong>  A rare type of tumor that arises from oligodendrocytes, the cells that produce the myelin covering around nerve fibers.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="medical-image-gallery">
+        <p href></p>
+    <div class="image-item">
+        <img src="{{ url_for('static', filename='assets/bt_glioma.jpg') }}" alt="Glioma Brain Tumor">
+        <p>MRI image of Glioma Brain Tumor</p>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', filename='assets/bt_meninglioma.jpg') }}" alt="Meninglioma Brain Tumor">
+        <p>MRI image of Meninglioma Brain Tumor</p>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', filename='assets/bt_pituatory.jpg') }}" alt="Pituitary Brain Tumor">
+        <p>MRI image of Pituitary Brain Tumor</p>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', filename='assets/bt_no_tumor.jpg') }}" alt="Normal"> 
+        <p>MRI image of Normal Brain</p>
+    </div>
+</div>
+
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="header">
+        <p><strong>Upload your medical image for professional analysis and prediction</strong></p>
+      </div>
+          <form action="/brain_tumor" method="post" enctype="multipart/form-data" id="upload-form">
+            <div class="upload-area" id="upload-area">
+              <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <h4>Upload your image</h4>
+              <p class="text-muted">Drag and drop your file here or click to browse</p>
+              <input type="file" class="form-control" name="my_image" id="file-input" accept="image/*">
+              <div class="file-name" id="file-name"></div>
+            </div>
+
+                <!-- Camera interface -->
+            <div class="camera-interface" id="camera-interface">
+              <video id="video" autoplay></video>
+              <button type="button" id="capture-btn">Capture</button>
+            </div>
+            
+            <div class="text-center mt-3">
+              <button type="button" class="btn btn-secondary" id="use-camera-btn">
+                <i class="fas fa-camera me-2"></i>Use Camera
+              </button>
+              <button type="submit" class="btn btn-primary px-5 mt-3">
+                <i class="fas fa-search-plus me-2"></i>Analyze Image
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      {% if prediction %}
+  <div class="result-card">
+    <div class="result-header">
+      <div class="badge-wrapper">Analysis Complete</div>
+      <h4 class="mb-1">Result</h4>
+      <span class="prediction-label">{{ prediction }}</span>
+    </div>
+    <div class="result-body">
+      {% if img_url %}
+        <img src="{{ img_url }}" class="result-image" alt="Analyzed Image">
+      {% endif %}
+      <p class="consult-note">Note: This result is generated by an AI model. Please consult a medical professional for an accurate diagnosis and advice.</p>
+    </div>
+  </div>
+{% endif %}
+      
+  <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+
+  <!-- Progress Bar -->
+<div class="progress mt-3" id="progress-bar" style="display:none;">
+  <div class="progress-bar" role="progressbar" id="progress" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='script/chat.js') }}"></script>
+<script src="{{ url_for('static', filename='script/brain_tumor.js') }}"></script>
+</html>
+

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Sickle Cell Anemia Risk Predictor</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <link rel = 'stylesheet' href="{{ url_for('static', filename='style/chat.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+  <style>
+  :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+  }
+
+  body {
+    background-color: #d5d9e9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .accent-circle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .accent-circle-1 {
+    width: 300px;
+    height: 300px;
+    background-color: rgba(67, 97, 238, 0.15);
+    top: -100px;
+    left: -100px;
+  }
+
+  .accent-circle-2 {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(67, 150, 238, 0.1);
+    bottom: -200px;
+    right: -200px;
+  }
+
+  .accent-circle-3 {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(63, 55, 201, 0.08);
+    top: 50%;
+    right: 10%;
+  }
+
+  .main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .header p {
+    color: #6c757d;
+  }
+
+  .form-container {
+    background-color: #ffffff;
+    margin: 30px auto;
+    max-width: 1200px;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h3 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d3557;
+    margin-bottom: 15px;
+  }
+
+  .card h5 {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #457b9d;
+  }
+
+  .card p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .card ul {
+    padding-left: 20px;
+  }
+
+  .card li {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #444;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(67, 97, 238, 0.25);
+    transition: all 0.3s;
+    width: fit-content;
+    padding: 10px 20px;
+    display: block;
+    margin: 20px auto;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(67, 97, 238, 0.3);
+  }
+
+  .back-link {
+    display: inline-flex;
+    color: #1976d2;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: all 0.3s;
+    padding: 10px 18px;
+    margin-left: 30px;
+    margin-right: auto;
+  }
+
+  .back-link:hover {
+    color: #f80303;
+    transform: translateX(-3px) scale(1.03);
+    text-decoration: underline;
+  }
+
+  .result-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    
+    .result-header {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .prediction-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .result-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+  .consult-note {
+    font-size: 0.9rem;
+    color: #cc0000;
+    margin-top: 10px;
+  }
+
+  .badge-wrapper {
+    background-color: #e6fffa;
+    color: #0694a2;
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+  @media (max-width: 768px) {
+    .card h3 {
+      font-size: 22px;
+    }
+
+    .card h5 {
+      font-size: 18px;
+    }
+  }
+</style>
+
+</head>
+<body>
+  <a href="/" class="back-link">
+        <span style="margin-right: 5px;">←</span> Back
+    </a>
+           <!-- Accent design elements -->
+  <div class="accent-circle accent-circle-1"></div>
+  <div class="accent-circle accent-circle-2"></div>
+  <div class="accent-circle accent-circle-3"></div>
+
+  <!-- <div class="container py-5"> -->
+    <div class="main-container">
+        <div class="card mb-4">
+          <div class="header">
+            <h1>Sickle Cell Anemia Risk predictor</h1>
+        </div>
+            <div class="card-body">
+                <p style="text-align: justify;"><strong>Sickle Cell Anemia</strong> is a hereditary blood disorder 
+                    characterized by the production of abnormally shaped red blood cells 
+                    that resemble a sickle or crescent. These misshapen cells can block 
+                    blood flow, leading to pain, anemia, infections, and potential organ 
+                    damage. It primarily affects individuals of African, Mediterranean, 
+                    Middle Eastern, and Indian ancestry.The disease is caused by a mutation 
+                    in the hemoglobin gene. When a person inherits two sickle cell genes 
+                    (one from each parent), they have the disease. Those with one gene are carriers 
+                    (sickle cell trait) and typically do not show symptoms but can pass the gene to 
+                    their offspring.</p>
+
+<h5 class="mt-4"><strong>Key Risk Factors</strong></h4>
+<ul>
+  <li><strong>Genetics:</strong> Inheriting the sickle cell gene from both parents is the primary cause of the disease.</li>
+  <li><strong>Ethnicity:</strong> More common in individuals of African, Mediterranean, or Middle Eastern descent.</li>
+  <li><strong>Family History:</strong> Having close relatives with sickle cell anemia or trait increases the risk.</li>
+</ul>
+
+<p style="text-align: justify;">While there is no universal cure, treatments such as hydroxyurea, blood transfusions, and in some cases bone marrow transplants can reduce complications. Early diagnosis and ongoing care are crucial for improving quality of life and life expectancy.</p>
+            </div>
+        </div>
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="header">
+            <h2 style="color: #1976d2;">Sickle Cell Anemia Disease Predictor</h2>
+        <p>Fill the required parameters to identify potential risk.</p>
+      </div>
+          <div class="form-container">
+        <form method="POST" action="/sicklecell">
+            <!-- Gender Selection -->
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Gender:</label>
+                <div>
+                    <label class="radio-inline" style="margin-right: 15px;">
+                        <input type="radio" name="gender" value="0" required> Female
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="1" required> Male
+                    </label>
+                </div>
+            </div>
+            <!-- Age -->
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Age:</label>
+                <input type="number" name="age" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Haemoglobin (Hb)</label>
+                <input type="number" step="any" name="hemoglobin" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Number of red blood cells per unit volume (RBC count)</label>
+                <input type="number" step="any" name="red_blood_cell" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Percentage of blood volume occupied by red blood cells (PCV)</label>
+                <input type="number" step="any" name="percent_blood_in rbc" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Average volume of red blood cells (MCV)</label>
+                <input type="number" step="any" name="avg_vol_of_rbc" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Average hemoglobin content per red blood cell (MCH)</label>
+                <input type="number" step="any" name="avg_hg_per_rbc" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span style="margin-right: 5px;"></span>Concentration of hemoglobin in a given volume of red blood cells (MCHC)</label>
+                <input type="number" step="any" name="conc_hg_in_vol_of_rbc" class="form-control" required>
+            </div>
+            
+            <div class="section-divider"></div>
+
+            <button type="submit" class="btn btn-primary px-5 mt-3" style="position: relative; left: 1px; top: 40px; transition: none;">
+                <i class="fas fa-search-plus me-2"></i>Generate Assessment
+            </button>
+        </form>
+        </div>
+    </div>
+</div>
+      
+      {% if prediction %}
+      <div class="result-card">
+  <div class="result-header">
+    <div class="badge-wrapper">Analysis Complete</div>
+    <h4 class="mb-1">Result</h4>
+    <span class="prediction-label">{{ prediction }}</span>
+  </div>
+  <div class="result-body">
+    <p class="consult-note">Note: This result is generated by an AI model. Please consult a medical professional for an accurate diagnosis and advice.</p>
+  </div>
+</div>
+
+      {% endif %}
+      
+  <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+
+  <!-- Progress Bar -->
+<div class="progress mt-3" id="progress-bar" style="display:none;">
+  <div class="progress-bar" role="progressbar" id="progress" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='script/chat.js') }}"></script>
+</html>
+

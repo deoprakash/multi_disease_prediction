@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diabetes Risk Predictor</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel = 'stylesheet' href="{{ url_for('static', filename='style/chat.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+  :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --text-muted: #6c757d;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  body {
+    background-color: #d5d9e9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Accent Design Circles */
+  .accent-circle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.4;
+  }
+
+  .accent-circle-1 {
+    width: 280px; height: 280px;
+    background-color: rgba(67, 97, 238, 0.15);
+    top: -80px; left: -80px;
+  }
+
+  .accent-circle-2 {
+    width: 360px; height: 360px;
+    background-color: rgba(67, 150, 238, 0.12);
+    bottom: -180px; right: -180px;
+  }
+
+  .accent-circle-3 {
+    width: 180px; height: 180px;
+    background-color: rgba(63, 55, 201, 0.08);
+    top: 50%; right: 5%;
+  }
+
+  .main-container {
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .header h1, .header h2 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  .form-container {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background-color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .card h3, .card h5 {
+    color: var(--secondary);
+    font-weight: 600;
+  }
+
+  .card p, .card li {
+    color: #333;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(67, 97, 238, 0.25);
+    transition: all 0.3s;
+    width: fit-content;
+    padding: 10px 20px;
+    display: block;
+    margin:20px auto; /* top right bottom left */
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+  }
+
+  .back-link {
+    display: inline-flex;
+    color: #1976d2;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: all 0.3s;
+    padding: 30px 18px;
+    margin-top: 5px;
+    margin-left: 30px;
+    margin-right: auto;
+  }
+
+  .back-link:hover {
+    color: #f80303;
+    text-decoration: underline;
+    transform: translateX(-3px);
+  }
+
+  .result-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .result-header {
+    background-color: var(--light);
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .prediction-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .result-body {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .consult-note {
+    font-size: 0.9rem;
+    color: #cc0000;
+    margin-top: 10px;
+  }
+
+   .badge-wrapper {
+    background-color: #e6fffa;
+    color: #0694a2;
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+  /* Responsive Tweaks */
+  @media (max-width: 768px) {
+    .card h3 {
+      font-size: 22px;
+    }
+
+    .card h5 {
+      font-size: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+</head>
+<body >
+
+    <!-- Back button -->
+    <a href="/" class="back-link">
+        <span style="margin-right: 5px;">←</span> Back
+    </a>
+           <!-- Accent design elements -->
+  <div class="accent-circle accent-circle-1"></div>
+  <div class="accent-circle accent-circle-2"></div>
+  <div class="accent-circle accent-circle-3"></div>
+
+
+<div class="container py-5">
+    <div class="main-container">
+        <div class="card mb-4">
+            <div class="header">
+            <h1>Diabetes Risk Prediction</h1>
+        </div>
+            <div class="card-body">
+                <p style="text-align: justify;">
+                    <strong>Diabetes</strong> is a chronic metabolic disorder characterized by elevated blood 
+                    glucose (sugar) levels due to the body's inability to produce or effectively use insulin. 
+                    It is a growing global health issue with significant impacts on quality of life and long-term health. 
+                    There are primarily two types: <br><strong>Type 1:</strong> where the body produces little or no insulin, 
+                    and <br><strong>Type 2:</strong> where the body becomes resistant to insulin or doesn’t produce enough.
+                    <br>Early detection and management of diabetes are essential to prevent severe complications, such as cardiovascular disease, 
+                    kidney failure, nerve damage, and vision loss. Lifestyle modifications, including dietary changes, increased physical activity, 
+                    regular blood sugar monitoring, and medication adherence, can help manage blood sugar levels and improve outcomes.
+                </p> <br>
+<h5>Key Risk Factors</h5> <br>
+<ul>
+  <li><strong>Unhealthy Diet:</strong> Consuming foods high in sugar, refined carbs, and unhealthy fats increases risk.</li>
+  <li><strong>Physical Inactivity:</strong> Lack of exercise contributes to insulin resistance and weight gain.</li>
+  <li><strong>Overweight/Obesity:</strong> Excess body fat, especially around the abdomen, raises Type 2 diabetes risk.</li>
+  <li><strong>Family History:</strong> Genetics plays a role; having diabetic parents or siblings increases susceptibility.</li>
+  <li><strong>Age and Ethnicity:</strong> Risk increases with age and is higher in certain populations, such as South Asians, African Americans, and Hispanics.</li>
+  <li><strong>Gestational Diabetes:</strong> Women who had diabetes during pregnancy have a higher risk of developing Type 2 diabetes later in life.</li>
+</ul>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+        <div class="card-body">
+          <div class="header">
+            <h2 style="color: #1976d2;">Diabetes Risk Predictor</h2>
+        <p>Fill the required parameters to identify potential risk.</p>
+      </div>
+          <div class="form-container">
+        <form method="POST" action="/diabetes">
+             <!-- Gender Selection -->
+            <div class="form-group">
+                <label>Age:</label>
+                <input type="number" name="age" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Gender:</label>
+                <div>
+                    <label class="radio-inline mr-3">
+                        <input type="radio" name="gender" value="0" required> Female
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="1" required> Male
+                    </label>
+                </div>
+            </div>
+            <!-- Symptom Fields in Two Columns -->
+             <div class="row">
+                {% for field in [
+                    'Polyuria', 'Polydipsia', 'sudden weight loss', 'weakness',
+                    'Polyphagia', 'Genital thrush', 'visual blurring', 'Itching',
+                    'Irritability', 'delayed healing', 'partial paresis',
+                    'muscle stiffness', 'Alopecia','Obesity'] %}
+                <div class="col-md-6 form-group">
+                    <label>{{ field.replace('_', ' ').title() }}:</label><br>
+                    <label class="mr-2">
+                        <input type="radio" name="{{ field }}" value="0" required> No
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ field }}" value="1" required> Yes
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary px-5 mt-3" style="position: relative; left: 1px; top: 40px; transition: none;">
+                <i class="fas fa-search-plus me-2"></i>Generate Assessment
+            </button>
+        </form>
+</div>
+</div>
+    </div>
+
+    {% if prediction %}
+      <div class="result-card">
+  <div class="result-header">
+    <div class="badge-wrapper">Analysis Complete</div>
+    <h4 class="mb-1">Result</h4>
+    <span class="prediction-label">{{ prediction }}</span>
+  </div>
+  <div class="result-body">
+    <p class="consult-note">Note: This result is generated by an AI model. Please consult a medical professional for an accurate diagnosis and advice.</p>
+  </div>
+</div>
+
+      {% endif %}
+
+      <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+
+  <!-- Progress Bar -->
+<div class="progress mt-3" id="progress-bar" style="display:none;">
+  <div class="progress-bar" role="progressbar" id="progress" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='script/chat.js') }}"></script>
+</html>

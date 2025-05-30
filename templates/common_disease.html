@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Health Risk Predictor</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_circle.png') }}">
+    <!-- Use a single Bootstrap version for consistency -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/chat.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text-muted: #6c757d;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: #d5d9e9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Accent Design Circles */
+        .accent-circle {
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .accent-circle-1 {
+            width: 280px;
+            height: 280px;
+            background-color: rgba(67, 97, 238, 0.15);
+            top: -80px;
+            left: -80px;
+        }
+
+        .accent-circle-2 {
+            width: 360px;
+            height: 360px;
+            background-color: rgba(67, 150, 238, 0.12);
+            bottom: -180px;
+            right: -180px;
+        }
+
+        .accent-circle-3 {
+            width: 180px;
+            height: 180px;
+            background-color: rgba(63, 55, 201, 0.08);
+            top: 50%;
+            right: 5%;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: auto;
+            
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1, .header h2 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .form-container {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3, .card h5 {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .card p, .card li {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        .btn-primary {
+                background-color: var(--primary);
+                border: none;
+                border-radius: 30px;
+                font-weight: 500;
+                box-shadow: 0 4px 6px rgba(67, 97, 238, 0.25);
+                transition: all 0.3s;
+                width: fit-content;
+                padding: 10px 20px;
+                display: block;
+                margin: 20px auto;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .back-link {
+            display: inline-flex;
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: all 0.3s;
+            padding: 30px 18px;
+            margin-top: 5px;
+            margin-left: 30px;
+            margin-right: auto;
+        }
+
+        .back-link:hover {
+            color: #f80303;
+            text-decoration: underline;
+            transform: translateX(-3px);
+        }
+
+        .result-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .result-header {
+            background-color: var(--light);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .prediction-label {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .result-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .badge-wrapper {
+    background-color: #e6fffa;
+    color: #0694a2;
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+        .consult-note {
+            font-size: 0.9rem;
+            color: #cc0000;
+            margin-top: 10px;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 768px) {
+            .card h3 {
+                font-size: 22px;
+            }
+
+            .card h5 {
+                font-size: 18px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+        }
+
+        
+
+    </style>
+</head>
+<body >
+
+    <!-- Back button -->
+    <a href="/" class="back-link">
+        <span style="margin-right: 5px;">←</span> Back
+    </a>
+
+    <!-- Accent design elements -->
+    <div class="accent-circle accent-circle-1"></div>
+    <div class="accent-circle accent-circle-2"></div>
+    <div class="accent-circle accent-circle-3"></div>
+
+    <div class="container py-5">
+        <div class="main-container">
+            <div class="card mb-4">
+                <div class="header">
+                    <h1>General Health Risk Predictor</h1>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-primary mb-3">About Common Disease Risk Prediction</h3>
+                    <p style="text-align: justify;">
+                            Health disorders often begin with mild or common symptoms that can easily be overlooked. 
+                            From metabolic and infectious diseases to neurological and cardiovascular conditions, early 
+                            identification can significantly improve treatment outcomes and prevent long-term complications.
+                    </p>
+                    <h5 class="mt-4">Key Risk Factors</h5>
+                <ul>
+                    <li><strong>Metabolic diseases</strong> such as diabetes and thyroid disorders.</li>
+                    <li><strong>Respiratory issues</strong>  like bronchitis and pneumonia.</li>
+                    <li><strong>Gastrointestinal disorders</strong> including hepatitis and ulcers.</li>
+                    <li><strong>Neurological problems</strong> like migraines and paralysis.</li>
+                    <li><strong>Infectious diseases</strong> such as malaria, dengue, and typhoid.</li>
+                    <li><strong>Skin and allergic conditions</strong> like psoriasis and drug reactions.</li>
+                </ul>
+                <p style="text-align: justify;">
+                    Timely identification of symptoms, even seemingly unrelated or minor ones, allows for early
+                     medical attention, which can drastically reduce risks and complications. While this system offers 
+                     valuable insight, it should not replace professional medical evaluation.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="header">
+                    <h2 style="color: #1976d2;">General Health Risk Predictor</h2>
+                    <p>Fill the required parameters to identify potential risk.</p>
+                </div>
+                <div class="form-container">
+                    <form method="POST" action="/common_disease">
+                        <div class="form-group">
+                            <!-- Dynamically generated checkboxes for each symptom -->
+                            <div class="row">
+                                    {% for field in [
+                                        "itching", "skin_rash", "nodal_skin_eruptions", "continuous_sneezing", "shivering", "chills", "joint_pain",
+                                        "stomach_pain", "acidity", "ulcers_on_tongue", "muscle_wasting", "vomiting", "burning_micturition",
+                                        "spotting_urination", "fatigue", "weight_gain", "anxiety", "cold_hands_and_feets", "mood_swings",
+                                        "weight_loss", "restlessness", "lethargy", "patches_in_throat", "irregular_sugar_level", "cough",
+                                        "high_fever", "sunken_eyes", "breathlessness", "sweating", "dehydration", "indigestion", "headache",
+                                        "yellowish_skin", "dark_urine", "nausea", "loss_of_appetite", "pain_behind_the_eyes", "back_pain",
+                                        "constipation", "abdominal_pain", "diarrhoea", "mild_fever", "yellow_urine", "yellowing_of_eyes",
+                                        "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise",
+                                        "blurred_and_distorted_vision", "phlegm", "throat_irritation", "redness_of_eyes", "sinus_pressure",
+                                        "runny_nose", "congestion", "chest_pain", "weakness_in_limbs", "fast_heart_rate",
+                                        "pain_during_bowel_movements", "pain_in_anal_region", "bloody_stool", "irritation_in_anus", "neck_pain",
+                                        "dizziness", "cramps", "bruising", "obesity", "swollen_legs", "swollen_blood_vessels", "puffy_face_and_eyes",
+                                        "enlarged_thyroid", "brittle_nails", "swollen_extremeties", "excessive_hunger", "extra_marital_contacts",
+                                        "drying_and_tingling_lips", "slurred_speech", "knee_pain", "hip_joint_pain", "muscle_weakness", "stiff_neck",
+                                        "swelling_joints", "movement_stiffness", "spinning_movements", "loss_of_balance", "unsteadiness",
+                                        "weakness_of_one_body_side", "loss_of_smell", "bladder_discomfort", "foul_smell_of urine",
+                                        "continuous_feel_of_urine", "passage_of_gases", "internal_itching", "toxic_look_(typhos)", "depression",
+                                        "irritability", "muscle_pain", "altered_sensorium", "red_spots_over_body", "belly_pain",
+                                        "abnormal_menstruation", "dischromic_patches", "watering_from_eyes", "increased_appetite", "polyuria",
+                                        "family_history", "mucoid_sputum", "rusty_sputum", "lack_of_concentration", "visual_disturbances",
+                                        "receiving_blood_transfusion", "receiving_unsterile_injections", "coma", "stomach_bleeding",
+                                        "distention_of_abdomen", "history_of_alcohol_consumption", "fluid_overload", "blood_in_sputum",
+                                        "prominent_veins_on_calf", "palpitations", "painful_walking", "pus_filled_pimples", "blackheads",
+                                        "scurring", "skin_peeling", "silver_like_dusting", "small_dents_in_nails", "inflammatory_nails", "blister",
+                                        "red_sore_around_nose", "yellow_crust_ooze"] %}
+                        <div class="col-md-6 form-group">
+                            <input type="checkbox" class="form-check-input" name="{{ field }}" value="1" id="{{ field }}">
+                            <label class="mr-2" for="{{ field }}">{{ field.replace('_', ' ').title() }}</label>
+                        </div>
+                {% endfor %}
+                         </div>
+                        <button type="submit" class="btn btn-primary px-5 mt-3" style="position: relative; left: 1px; top: 40px; transition: none;">
+                            <i class="fas fa-search-plus me-2"></i>Generate Assessment
+                        </button>
+                    </div>
+                 </form>
+            </div>
+        </div>
+    </div>
+
+        {% if prediction %}
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="badge-wrapper">Analysis Complete</div>
+                    <h4 class="mb-1">Result</h4>
+                    <span class="prediction-label">{{ prediction }}</span>
+                </div>
+                <div class="result-body">
+                    <p class="consult-note">Note: This result is generated by an AI model. Please consult a medical professional for an accurate diagnosis and advice.</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Chat Button -->
+  <div class="chat-button" id="chat-button">
+    <i class="fas fa-comments chat-icon"></i>
+  </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        Health AI Bot
+        <span id="chat-close" style="float:right;cursor:pointer;">✕</span>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- messages will go here -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message…" />
+        <button id="chat-send">Send</button>
+      </div>
+  </div>
+
+  <!-- Progress Bar -->
+<div class="progress mt-3" id="progress-bar" style="display:none;">
+  <div class="progress-bar" role="progressbar" id="progress" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+    
+
+    <script src="{{ url_for('static', filename='script/chat.js') }}"></script>
+</body>
+</html>
