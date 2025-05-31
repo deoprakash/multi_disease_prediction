@@ -26,8 +26,8 @@ RUN --mount=type=cache,target=/root/.cache \
 
 COPY . .
 
-# Load environment variables from .env file
-ENV PYTHONUNBUFFERED=1
+# # Load environment variables from .env file
+# ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
