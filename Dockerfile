@@ -29,6 +29,6 @@ COPY . .
 # Load environment variables from .env file
 ENV PYTHONUNBUFFERED=1
 
-EXPOSE 10000
+EXPOSE EXPOSE 5000
 
 CMD ["python", "app.py"]
