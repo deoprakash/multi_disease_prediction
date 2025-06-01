@@ -17,4 +17,3 @@ email-validator
 cloudinary
 dotenv
 Pillow
-gunicorn==21.2.0
