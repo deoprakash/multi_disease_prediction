@@ -93,9 +93,35 @@ multi_disease_prediction/
 
 ---
 
-## 📄 License
+##License
 
-MIT License. Free to use and modify.
+Proprietary Software License Agreement
+
+Copyright (c) 2025 Deo Prakash & Arya Singh
+
+All rights reserved.
+
+This software and associated documentation files (the "Software") are the exclusive intellectual property of Deo Prakash.
+
+Permission is NOT granted to any person to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, or permit others to do so.
+
+You may NOT:
+- Use this Software or any part thereof in any form, for any purpose, including personal, academic, or commercial.
+- Copy, replicate, or host the Software or its components.
+- Modify or derive works based on this Software.
+
+Any use or distribution of this Software without express prior written consent from Deo Prakash & Arya Singh is strictly prohibited and constitutes a violation of international copyright law.
+
+Unauthorized use will be subject to civil and criminal penalties as per applicable intellectual property laws.
+
+For licensing inquiries, please contact:
+
+📧 Email: deoprakash364@gmail.com / aryasingh1320@gmail.com  
+🔗 LinkedIn: www.linkedin.com/in/deo-prakash-152265225  &   https://www.linkedin.com/in/arya-singh-3558a5256/  
+📍 Location: India
+
+-------------------------
+© Deo Prakash, 2025. All Rights Reserved.
 
 ---
 
