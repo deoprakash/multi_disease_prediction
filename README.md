@@ -101,7 +101,7 @@ Copyright (c) 2025 Deo Prakash & Arya Singh
 
 All rights reserved.
 
-This software and associated documentation files (the "Software") are the exclusive intellectual property of Deo Prakash.
+This software and associated documentation files (the "Software") are the exclusive intellectual property of Deo Prakash & Arya Singh.
 
 Permission is NOT granted to any person to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, or permit others to do so.
 
