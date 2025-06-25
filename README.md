@@ -121,7 +121,7 @@ For licensing inquiries, please contact:
 📍 Location: India
 
 -------------------------
-© Deo Prakash, 2025. All Rights Reserved.
+© Deo Prakash & Arya Singh, 2025. All Rights Reserved.
 
 ---
 
