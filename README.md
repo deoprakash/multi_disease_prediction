@@ -1,6 +1,8 @@
 
 # Multi-Disease Prediction Web App 🧠🩺
 
+**[DEMO VIDEO](https://drive.google.com/file/d/1I-FKTZ2zaGFnTOfTGkX5v1bePqXG7Wae/view?usp=sharing)**
+
 This project is a Flask-based web application that allows users to predict the risk or presence of various diseases using Machine Learning (ML) and Deep Learning (DL) models.
 
 ## 🔬 Supported Disease Models
